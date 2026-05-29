@@ -1,41 +1,34 @@
-package com.sahil.employee.service;
+package com.sahil.employeeapi.service;
 
-import com.sahil.employee.exception.ResourceNotFoundException;
-import com.sahil.employee.model.Employee;
-import com.sahil.employee.repository.EmployeeRepository;
-import lombok.RequiredArgsConstructor;
+import com.sahil.employeeapi.model.Employee;
+import com.sahil.employeeapi.repository.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-public class EmployeeService {
+public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
-    // CREATE
+    @Override
     public Employee createEmployee(Employee employee) {
         return employeeRepository.save(employee);
     }
 
-    // READ ALL
+    @Override
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
     }
 
-    // READ BY ID
+    @Override
     public Employee getEmployeeById(Long id) {
         return employeeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
     }
 
-    // READ BY DEPARTMENT
-    public List<Employee> getEmployeesByDepartment(String department) {
-        return employeeRepository.findByDepartment(department);
-    }
-
-    // UPDATE
+    @Override
     public Employee updateEmployee(Long id, Employee updatedEmployee) {
         Employee existing = getEmployeeById(id);
         existing.setFirstName(updatedEmployee.getFirstName());
@@ -47,9 +40,14 @@ public class EmployeeService {
         return employeeRepository.save(existing);
     }
 
-    // DELETE
+    @Override
     public void deleteEmployee(Long id) {
         Employee existing = getEmployeeById(id);
         employeeRepository.delete(existing);
+    }
+
+    @Override
+    public List<Employee> getEmployeesByDepartment(String department) {
+        return employeeRepository.findByDepartment(department);
     }
 }

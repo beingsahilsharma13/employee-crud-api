@@ -1,9 +1,8 @@
-package com.sahil.employee.repository;
+package com.sahil.employeeapi.repository;
 
-import com.sahil.employee.model.Employee;
+import com.sahil.employeeapi.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 
